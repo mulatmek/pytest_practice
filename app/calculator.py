@@ -8,7 +8,7 @@ class BaseCalculator:
 
     def __init_subclass__(cls, **kwargs):
         """Register subclasses by their declared calculator type."""
-        cls.registry[cls.calculator_type] = cls
+        cls.registry[cls.Type] = cls
 
     @classmethod
     def factory(cls, calculator_type, *args, **kwargs):
@@ -39,7 +39,7 @@ class BaseCalculator:
 class SimpleCalculator(BaseCalculator):
     """Calculator with basic arithmetic operations."""
 
-    calculator_type = "simple"
+    Type = "simple"
 
     def add(self, a, b):
         """Return the sum of two numbers."""
@@ -67,7 +67,7 @@ class SimpleCalculator(BaseCalculator):
 class SuperCalculator(BaseCalculator):
     """Calculator that tracks operation history and advanced operations."""
 
-    calculator_type = "super"
+    Type = "super"
 
     def __init__(self):
         """Initialize operation history."""

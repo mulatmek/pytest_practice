@@ -1,6 +1,9 @@
+from pathlib import Path
+
 import pytest
 
 from app.calculator import BaseCalculator
+from utils.logging_utils import configure_test_logging, shutdown_logger
 
 SUPPORTED_CALCULATOR_MODES = ("simple", "super")
 
@@ -22,14 +25,27 @@ def mode(request):
     return request.config.getoption("--mode")
 
 
+@pytest.fixture(scope="session", autouse=True)
+def configure_framework_logging():
+    """Initialize framework logging one time for the test session."""
+    logger, log_file = configure_test_logging(Path(__file__).resolve().parent)
+    logger.warning("Framework logging initialized. file=%s", log_file)
+    yield logger
+
+    logger.warning("Framework logging shutdown")
+    shutdown_logger(logger)
+
+
 @pytest.fixture(scope="session")
-def calculator(mode):
+def calculator(mode, configure_framework_logging):
     """Create one calculator instance per test session."""
-    print(f"\n[Setup] Creating {mode} calculator")
+    logger = configure_framework_logging
+    logger.info("[Setup] Creating %s calculator", mode)
+    logger.debug("Creating calculator through BaseCalculator.factory")
     calculator_instance = BaseCalculator.factory(calculator_type=mode)
     yield calculator_instance
 
-    print("\n[Teardown] Cleaning up calculator")
+    logger.info("[Teardown] Cleaning up calculator")
 
 
 @pytest.fixture
@@ -45,8 +61,9 @@ def input_data():
 
 
 @pytest.fixture(scope="session", autouse=True)
-def suite_monitor():
-    """Print a lightweight banner around the test suite lifecycle."""
-    print("\n>>> STARTING TEST SUITE <<<")
+def suite_monitor(configure_framework_logging):
+    """Log a lightweight banner around the test suite lifecycle."""
+    logger = configure_framework_logging
+    logger.info(">>> STARTING TEST SUITE <<<")
     yield
-    print("\n>>> FINISHED TEST SUITE <<<")
+    logger.info(">>> FINISHED TEST SUITE <<<")
