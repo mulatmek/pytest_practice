@@ -2,7 +2,6 @@ import math
 
 
 class BaseCalculator:
-
     Types = {}
 
     def __init_subclass__(cls, **kwargs):
@@ -26,7 +25,6 @@ class BaseCalculator:
 
 
 class SimpleCalculator(BaseCalculator):
-
     Type = "simple"
 
     def add(self, a, b):

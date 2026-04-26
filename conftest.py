@@ -1,6 +1,6 @@
-from app.calculator import BaseCalculator
 import pytest
 
+from app.calculator import BaseCalculator
 
 SUPPORTED_CALCULATOR_MODES = ("simple", "super")
 
