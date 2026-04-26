@@ -1,35 +1,18 @@
 import pytest
 
-# --- Basic Smoke Tests (No special decorators) ---
-
-
 @pytest.mark.smoke
-def test_add_simple(calculator):
-    """
-    Standard test: Check if 10 + 5 equals 15.
-    """
-    assert calculator.add(10, 5) == 15
-
-
-@pytest.mark.smoke
-def test_subtract_simple(calculator):
-    """
-    Standard test: Check if 10 - 5 equals 5.
-    """
-    assert calculator.subtract(10, 5) == 5
-
-
-@pytest.mark.smoke
-def test_multiply_simple(calculator):
-    """
-    Standard test: Check if 10 * 5 equals 50.
-    """
-    assert calculator.multiply(10, 5) == 50
-
-
-@pytest.mark.smoke
-def test_divide_simple(calculator):
-    """
-    Standard test: Check if 10 / 2 equals 5.0.
-    """
-    assert calculator.divide(10, 2) == 5.0
+@pytest.mark.parametrize(
+    ("operation", "left", "right", "expected"),
+    [
+        ("add", 10, 5, 15),
+        ("subtract", 10, 5, 5),
+        ("multiply", 10, 5, 50),
+        ("divide", 10, 2, 5.0),
+        ("percentage", 50, 10, 5.0),
+    ],
+    ids=["add", "subtract", "multiply", "divide", "percentage"],
+)
+def test_basic_operations_smoke(calculator, operation, left, right, expected):
+    """Validate core arithmetic operations with representative inputs."""
+    operation_method = getattr(calculator, operation)
+    assert operation_method(left, right) == expected
