@@ -58,3 +58,14 @@ def test_divide_by_zero_error(calculator, input_data):
         calculator.divide(a, b)
 
     assert "Cannot divide by zero" in str(excinfo.value)
+
+
+# --- Test 6: Percentage Calculation ---
+def test_percentage_positive_numbers(calculator, input_data):
+    """
+    Uses 'positive' data: (10, 5)
+    Expected: 5% of 10 = 0.5
+    """
+    a, b = input_data["positive"]
+    result = calculator.percentage(a, b)
+    assert result == 0.5

@@ -8,8 +8,9 @@ import pytest
         ("subtract", 10, 5, 5),
         ("multiply", 10, 5, 50),
         ("divide", 10, 2, 5.0),
+        ("percentage", 50, 10, 5.0),
     ],
-    ids=["add", "subtract", "multiply", "divide"],
+    ids=["add", "subtract", "multiply", "divide", "percentage"],
 )
 def test_basic_operations_smoke(calculator, operation, left, right, expected):
     """Validate core arithmetic operations with representative inputs."""

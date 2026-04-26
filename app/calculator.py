@@ -31,6 +31,10 @@ class BaseCalculator:
         """Return the quotient of two numbers."""
         raise NotImplementedError
 
+    def percentage(self, a, b):
+        """Return b percent of a."""
+        raise NotImplementedError
+
 
 class SimpleCalculator(BaseCalculator):
     """Calculator with basic arithmetic operations."""
@@ -54,6 +58,10 @@ class SimpleCalculator(BaseCalculator):
         if b == 0:
             raise ValueError("Cannot divide by zero")
         return a / b
+
+    def percentage(self, a, b):
+        """Return b percent of a."""
+        return (a * b) / 100
 
 
 class SuperCalculator(BaseCalculator):
@@ -86,6 +94,12 @@ class SuperCalculator(BaseCalculator):
     def divide(self, a, b):
         """Return the quotient and store it in history."""
         res = a / b
+        self.history.append(res)
+        return res
+
+    def percentage(self, a, b):
+        """Return b percent of a and store it in history."""
+        res = (a * b) / 100
         self.history.append(res)
         return res
 
